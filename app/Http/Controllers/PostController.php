@@ -76,7 +76,7 @@ class PostController extends Controller
 
 
         return response([
-            'message' => 'Post created.',
+            'message' => 'Post updated.',
             'post' => $post,
         ], 200);
     }
