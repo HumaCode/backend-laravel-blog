@@ -45,6 +45,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);   // hapus
 
     // Like
-    Route::post('/posts/{id}/like', [LikeController::class, 'likeOrUnlike']);    // like
+    Route::post('/posts/{id}/likes', [LikeController::class, 'likeOrUnlike']);    // like
 
 });
