@@ -11,7 +11,12 @@ class PostController extends Controller
     public function index()
     {
         return response([
-            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')->get()
+            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')
+                ->with('likes', function ($like) {
+                    return $like->where('user_id', auth()->user()->id)
+                        ->select('id', 'user_id', 'post_id')->get();
+                })
+                ->get()
         ]);
     }
 
@@ -29,11 +34,15 @@ class PostController extends Controller
             'body' => 'required|string'
         ]);
 
+        // image
+        $image = $this->saveImage($request->image, 'posts');
+
 
         // create
         $post = Post::create([
             'body' => $attrs['body'],
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'image' => $image
         ]);
 
 
@@ -104,8 +113,8 @@ class PostController extends Controller
 
 
 
-        $post->comments->delete();
-        $post->likes->delete();
+        $post->comments()->delete();
+        $post->likes()->delete();
         $post->delete();
 
         return response([
