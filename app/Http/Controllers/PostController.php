@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,7 +11,7 @@ class PostController extends Controller
     public function index()
     {
         return response([
-            'post' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')->get()
+            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')->get()
         ]);
     }
 
@@ -103,7 +104,7 @@ class PostController extends Controller
 
 
 
-        $post->comment->delete();
+        $post->comments->delete();
         $post->likes->delete();
         $post->delete();
 
