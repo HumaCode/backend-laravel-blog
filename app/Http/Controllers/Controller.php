@@ -24,6 +24,6 @@ class Controller extends BaseController
         // save image
         \Storage::disk($path)->put($filename, base64_decode($image));
 
-        return URL::to('/') . '\storage' . $path . '/' . $filename;
+        return URL::to('/') . '/' . $path . '/' . $filename;
     }
 }

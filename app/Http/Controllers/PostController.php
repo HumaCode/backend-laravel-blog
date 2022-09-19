@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class PostController extends Controller
 {
     public function index()
     {
         return response([
-            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')
+            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments as commentsCount', 'likes as likesCount')
                 ->with('likes', function ($like) {
                     return $like->where('user_id', auth()->user()->id)
                         ->select('id', 'user_id', 'post_id')->get();
@@ -36,7 +37,6 @@ class PostController extends Controller
 
         // image
         $image = $this->saveImage($request->image, 'posts');
-
 
         // create
         $post = Post::create([

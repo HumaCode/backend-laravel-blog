@@ -42,6 +42,13 @@ return [
             'visibility' => 'public',
         ],
 
+        // 'public' => [
+        //     'driver' => 'local',
+        //     'root' => public_path(),
+        //     'url' => env('APP_URL'),
+        //     'visibility' => 'public',
+        // ],
+
         'profiles' => [
             'driver' => 'local',
             'root' => storage_path('app/public/profiles'),
@@ -51,7 +58,7 @@ return [
 
         'posts' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/posts'),
+            'root' => public_path('posts'),
             'url' => env('APP_URL') . '\storage',
             'visibility' => 'public'
         ],
