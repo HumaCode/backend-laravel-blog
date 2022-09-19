@@ -75,12 +75,22 @@ class AuthController extends Controller
     public function update(Request $request)
     {
         $attrs = $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
         ]);
+
+
+        $userId = User::find(auth()->user()->id);
+
+        $fotolama = substr($userId->image, -14);
+
+        // hapus foto lama
+        if ($userId->image <> "") {
+            unlink(public_path('profiles') . '/' . $fotolama);
+        }
 
         $image = $this->saveImage($request->image, 'profiles');
 
-        auth()->user()->update([
+        auth()->user()->id->update([
             'name' => $attrs['name'],
             'image' => $image
         ]);

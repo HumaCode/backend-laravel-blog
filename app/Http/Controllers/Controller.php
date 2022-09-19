@@ -20,7 +20,7 @@ class Controller extends BaseController
         }
 
         $filename = time() . '.png';
-
+        $filename2 = URL::to('/');
         // save image
         \Storage::disk($path)->put($filename, base64_decode($image));
 

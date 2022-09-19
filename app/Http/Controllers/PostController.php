@@ -12,7 +12,7 @@ class PostController extends Controller
     public function index()
     {
         return response([
-            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments as commentsCount', 'likes as likesCount')
+            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')
                 ->with('likes', function ($like) {
                     return $like->where('user_id', auth()->user()->id)
                         ->select('id', 'user_id', 'post_id')->get();
@@ -96,6 +96,13 @@ class PostController extends Controller
     {
         //ambil data post berdasarkan id
         $post = Post::find($id);
+
+        $fotolama = substr($post->image, -14);
+
+        // hapus foto lama
+        if ($post->image <> "") {
+            unlink(public_path('posts') . '/' . $fotolama);
+        }
 
         // jika tidak ada post berdasarkan id
         if (!$post) {
